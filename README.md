@@ -7,8 +7,8 @@ This Dockerfile will build and run the most current release of the
 Usage
 =====
 
-To run a prebuilt version of the CoreNLP server locally at
-``http://localhost:8080``, just type:
+To download and run a [prebuilt version of the CoreNLP server](https://hub.docker.com/r/nlpbox/corenlp/)
+from Docker Hub locally at ``http://localhost:8080``, just type:
 
 ```
 docker run -p 8080:9000 nlpbox/corenlp
