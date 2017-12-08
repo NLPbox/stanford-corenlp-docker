@@ -11,7 +11,7 @@ RUN git clone https://github.com/foutaise/grepurl.git
 
 
 # install latest CoreNLP release
-RUN wget $(/opt/grepurl/grepurl -d -r 'zip$' -a http://stanfordnlp.github.io/CoreNLP/) && \
+RUN wget $(/opt/grepurl/grepurl -r 'zip$' -a http://stanfordnlp.github.io/CoreNLP/) && \
     unzip stanford-corenlp-full-*.zip && \
     mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
 
