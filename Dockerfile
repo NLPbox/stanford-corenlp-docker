@@ -10,8 +10,8 @@ WORKDIR /opt/
 RUN git clone https://github.com/foutaise/grepurl.git
 
 
-# install stable CoreNLP release 3.6.0
-RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip && \
+# install stable CoreNLP release 3.7.0
+RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2016-10-31.zip && \
     unzip stanford-corenlp-full-*.zip && \
     mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
 
