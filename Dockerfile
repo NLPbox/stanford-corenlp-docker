@@ -1,9 +1,8 @@
-
-FROM nlpbox/nlpbox-base:16.04
+FROM ubuntu:16.04
 MAINTAINER Arne Neumann <nlpbox.programming@arne.cl>
 
 RUN apt-get update -y && \
-    apt-get install -y openjdk-8-jre python-pycurl
+    apt-get install -y git wget dtrx openjdk-8-jre python-pycurl
 
 # install geturl script to retrieve the most current download URL of CoreNLP
 WORKDIR /opt/
