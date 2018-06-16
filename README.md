@@ -21,42 +21,27 @@ docker build -t corenlp https://github.com/NLPbox/stanford-corenlp-docker.git
 docker run -p 8080:9000 corenlp
 ```
 
+In another console, you can now query the CoreNLP REST API like this:
 
-arne@tiny-brick ~/repos/nlpbox/stanford-corenlp-docker $ docker run -p 9000:9000 -ti corenlp-docker
-[main] INFO CoreNLP - --- StanfordCoreNLPServer#main() called ---
-[main] INFO CoreNLP - setting default constituency parser
-[main] INFO CoreNLP - warning: cannot find edu/stanford/nlp/models/srparser/englishSR.ser.gz
-[main] INFO CoreNLP - using: edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz instead
-[main] INFO CoreNLP - to use shift reduce parser download English models jar from:
-[main] INFO CoreNLP - http://stanfordnlp.github.io/CoreNLP/download.html
+```
+wget -q --post-data "Although they didn't like it, they accepted the offer." \
+  'localhost:9000/?properties={"annotators":"parse","outputFormat":"json"}' \
+  -O - | jq ".sentences[0].parse"
+```
 
+which will return this parse tree:
 
-# FIXME: retrieve this properly after debug
-ADD stanford-german-corenlp-2018-02-27-models.jar /opt/corenlp/
-RUN unzip -j "stanford-german-corenlp-2018-02-27-models.jar" "StanfordCoreNLP-german.properties" -d .
+```
+"(ROOT\n  (S\n    (SBAR (IN Although)\n      (S\n        (NP (PRP they))\n        (VP (VBD did) (RB n't)\n          (PP (IN like)\n            (NP (PRP it))))))\n    (, ,)\n    (NP (PRP they))\n    (VP (VBD accepted)\n      (NP (DT the) (NN offer)))\n    (. .)))"
+```
 
+If you need the full xml output and want to configure more parameters, try:
 
-CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties StanfordCoreNLP-german.properties -port 9000 -timeout 15000
-
-wget --post-data 'Deine Mutter kommt aus Wuppertal.' 'localhost:9000/?properties={"pipelineLanguage":"german","annotators":"tokenize,ssplit,pos,ner,parse"}' -O -
-
-
-# install latest English language model
-#
-# Docker can't set an ENV to the result of a RUN command, so we'll have
-# to use this workaround.
-# This command get's the first model file (at least for English there are two)
-# and extracts its property file.
-WORKDIR /opt/corenlp
-ENV PROPERTIES_FILE StanfordCoreNLP-english.properties
-RUN wget $(/opt/grepurl/grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
-
-# RUN unzip -j $(/opt/grepurl/grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1) $PROPERTIES_FILE -d .
-
-
-
-ENV PORT 9000
-EXPOSE $PORT
-
-CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties $PROPERTIES_FILE -port 9000 -timeout 15000
-
+```
+wget -q --post-data "Although they didn't like it, they accepted the offer." \
+  'localhost:9000/?properties={ \
+    "annotators":"tokenize,ssplit,pos,lemma,ner,parse", \
+    "ssplit.eolonly":"false", "tokenize.whitespace":"true", \
+    "outputFormat":"xml"}' \
+  -O results.xml
+```
