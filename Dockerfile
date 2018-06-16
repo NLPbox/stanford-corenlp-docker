@@ -14,10 +14,17 @@ RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-02-27.zip &
     unzip stanford-corenlp-full-*.zip && \
     mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
 
+# install latest English language model
+#
+# Docker can't set an ENV to the result of a RUN command, so we'll have
+# to use this workaround.
+# This command get's the first model file (at least for English there are two)
+# and extracts its property file.
 WORKDIR /opt/corenlp
+RUN wget $(/opt/grepurl/grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
+
 
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer --port $PORT --timeout 10000
-
+CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
