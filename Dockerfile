@@ -14,9 +14,9 @@ RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-02-27.zip &
     unzip stanford-corenlp-full-*.zip && \
     mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
 
-# install English language model 3.9.1
+# install German language model 3.9.1
 WORKDIR /opt/corenlp
-RUN wget http://nlp.stanford.edu/software/stanford-english-corenlp-2018-02-27-models.jar
+RUN wget http://nlp.stanford.edu/software/stanford-german-corenlp-2018-02-27-models.jar
 
 
 ENV PORT 9000
