@@ -4,10 +4,7 @@ MAINTAINER Arne Neumann <nlpbox.programming@arne.cl>
 RUN apt-get update -y && \
     apt-get install -y git wget dtrx openjdk-8-jre python-pycurl
 
-# install geturl script to retrieve the most current download URL of CoreNLP
 WORKDIR /opt/
-RUN git clone https://github.com/foutaise/grepurl.git
-
 
 # install stable CoreNLP release 3.9.1
 RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-02-27.zip && \
@@ -15,11 +12,13 @@ RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-02-27.zip &
     mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
 
 # install German language model 3.9.1
+ENV PROPERTIES_FILE StanfordCoreNLP-german.properties
 WORKDIR /opt/corenlp
-RUN wget http://nlp.stanford.edu/software/stanford-german-corenlp-2018-02-27-models.jar
+RUN wget http://nlp.stanford.edu/software/stanford-german-corenlp-2018-02-27-models.jar && \
+    unzip -j "stanford-german-corenlp-2018-02-27-models.jar" $PROPERTIES_FILE -d .
 
 
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
+CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties $PROPERTIES_FILE -port 9000 -timeout 15000
