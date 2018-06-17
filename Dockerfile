@@ -18,8 +18,8 @@ RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-02-27.zip &
 WORKDIR /opt/corenlp
 RUN wget http://nlp.stanford.edu/software/stanford-english-corenlp-2018-02-27-models.jar
 
-
+ENV JAVA_XMX 4g
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
+CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
