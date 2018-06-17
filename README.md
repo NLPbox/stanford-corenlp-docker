@@ -14,6 +14,14 @@ from Docker Hub locally at ``http://localhost:9000``, just type:
 docker run -p 9000:9000 nlpbox/corenlp
 ```
 
+By default, CoreNLP will use up to 4GB of RAM. You can change this by setting
+the `JAVA_XMX` environment variable. Here, we're giving it 3GB:
+
+```
+docker run -e JAVA_XMX=3g -p 9000:9000 -ti corenlp-docker
+```
+
+
 In order to build and run the container from scratch (e.g. if you want to use the most current release of Stanford CoreNLP, type:
 
 ```

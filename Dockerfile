@@ -18,7 +18,8 @@ RUN wget http://nlp.stanford.edu/software/stanford-german-corenlp-2018-02-27-mod
     unzip -j "stanford-german-corenlp-2018-02-27-models.jar" $PROPERTIES_FILE -d .
 
 
+ENV JAVA_XMX 4g
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -Xmx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties $PROPERTIES_FILE -port 9000 -timeout 15000
+CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -serverProperties $PROPERTIES_FILE -port 9000 -timeout 15000
