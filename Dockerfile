@@ -6,7 +6,7 @@ RUN apt-get update -y && \
 
 # install geturl script to retrieve the most current download URL of CoreNLP
 WORKDIR /opt/
-RUN git clone https://github.com/foutaise/grepurl.git
+RUN git clone https://github.com/arne-cl/grepurl.git
 
 
 # install latest CoreNLP release
