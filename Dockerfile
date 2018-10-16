@@ -11,20 +11,15 @@ RUN git clone https://github.com/arne-cl/grepurl.git
 WORKDIR /opt/grepurl
 RUN python setup.py install
 
-# install latest CoreNLP release
+# install CoreNLP release 3.9.2
 WORKDIR /opt
-RUN wget $(grepurl -r 'zip$' -a http://stanfordnlp.github.io/CoreNLP/) && \
+RUN wget http://nlp.stanford.edu/software/stanford-corenlp-full-2018-10-05.zip && \
     unzip stanford-corenlp-full-*.zip && \
     mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
 
-# install latest English language model
-#
-# Docker can't store the result of a RUN command in an ENV, so we'll have
-# to use this workaround.
-# This command get's the first model file (at least for English there are two)
-# and extracts its property file.
+# install German language model 3.9.2
 WORKDIR /opt/corenlp
-RUN wget $(grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
+RUN wget http://nlp.stanford.edu/software/stanford-german-corenlp-2018-10-05-models.jar
 
 
 # only keep the things we need to run CoreNLP
