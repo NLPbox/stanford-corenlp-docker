@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.8 as builder
 MAINTAINER Arne Neumann <nlpbox.programming@arne.cl>
 
 RUN apk update && \
@@ -26,6 +26,14 @@ RUN wget $(grepurl -r 'zip$' -a http://stanfordnlp.github.io/CoreNLP/) && \
 WORKDIR /opt/corenlp
 RUN wget $(grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
 
+
+# only keep the things we need to run CoreNLP
+FROM alpine:3.8
+
+RUN apk update && apk add openjdk8-jre-base
+
+WORKDIR /opt/corenlp
+COPY --from=builder /opt/corenlp .
 
 ENV JAVA_XMX 4g
 ENV PORT 9000
