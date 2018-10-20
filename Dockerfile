@@ -27,13 +27,16 @@ WORKDIR /opt/corenlp
 RUN wget $(grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | head -n 1)
 
 
-# only keep the things we need to run CoreNLP
+# only keep the things we need to run and test CoreNLP
 FROM alpine:3.8
 
-RUN apk update && apk add openjdk8-jre-base
+RUN apk update && apk add openjdk8-jre-base py3-pip && \
+    pip3 install pytest pexpect requests
 
 WORKDIR /opt/corenlp
 COPY --from=builder /opt/corenlp .
+
+ADD test_api.py .
 
 ENV JAVA_XMX 4g
 ENV PORT 9000

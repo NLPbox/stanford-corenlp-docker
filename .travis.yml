@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+  - docker
+
+install:
+  - docker build -t corenlp .
+
+script:
+  - docker run --entrypoint=pytest -ti corenlp test_api.py
