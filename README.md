@@ -18,7 +18,7 @@ By default, CoreNLP will use up to 4GB of RAM. You can change this by setting
 the `JAVA_XMX` environment variable. Here, we're giving it 3GB:
 
 ```
-docker run -e JAVA_XMX=3g -p 9000:9000 -ti corenlp-docker
+docker run -e JAVA_XMX=3g -p 9000:9000 -ti nlpbox/corenlp
 ```
 
 
