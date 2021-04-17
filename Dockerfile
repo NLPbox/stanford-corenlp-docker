@@ -5,7 +5,7 @@ RUN apk update && \
     apk add git wget openjdk8-jre-base py2-pip py2-curl && \
     pip install setuptools
 
-# install geturl script to retrieve the most current download URL of CoreNLP
+# install grepurl script to retrieve the most current download URL of CoreNLP
 WORKDIR /opt
 RUN git clone https://github.com/arne-cl/grepurl.git
 WORKDIR /opt/grepurl
@@ -13,9 +13,9 @@ RUN python setup.py install
 
 # install latest CoreNLP release
 WORKDIR /opt
-RUN wget $(grepurl -r 'zip$' -a http://stanfordnlp.github.io/CoreNLP/) && \
-    unzip stanford-corenlp-full-*.zip && \
-    mv $(ls -d stanford-corenlp-full-*/) corenlp && rm *.zip
+RUN wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip && \
+    unzip stanford-corenlp-latest.zip && \
+    mv $(ls -d stanford-corenlp-*/) corenlp && rm *.zip
 
 # install latest English language model
 #
@@ -39,7 +39,9 @@ COPY --from=builder /opt/corenlp .
 ADD test_api.py .
 
 ENV JAVA_XMX 4g
+ENV TIMEOUT_MILLISECONDS 15000
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000
+CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port $PORT -timeout $TIMEOUT_MILLISECONDS
+
