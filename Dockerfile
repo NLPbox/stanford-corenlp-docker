@@ -43,5 +43,6 @@ ENV TIMEOUT_MILLISECONDS 15000
 ENV PORT 9000
 EXPOSE $PORT
 
-CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port $PORT -timeout $TIMEOUT_MILLISECONDS
+
+CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators "parse" -port $PORT -timeout $TIMEOUT_MILLISECONDS
 
