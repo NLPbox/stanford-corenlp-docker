@@ -21,6 +21,12 @@ the `JAVA_XMX` environment variable. Here, we're giving it 3GB:
 docker run -e JAVA_XMX=3g -p 9000:9000 -ti nlpbox/corenlp
 ```
 
+The default maximum characters that CoreNLP server will take at one time is 100000 (one hundred thousand)
+This can be changed by setting the `MAXIMUM_CHARACTER_LENGTH` environment variable as shown below:
+
+```
+docker run -e MAXIMUM_CHARACTER_LENGTH=500000 -p 9000:9000 -ti nlpbox/corenlp
+```
 
 In order to build and run the container from scratch (e.g. if you want to use the most current release of Stanford CoreNLP, type:
 
