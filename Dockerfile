@@ -1,4 +1,5 @@
 FROM alpine:3.8 as builder
+MAINTAINER Arne Neumann <nlpbox.programming@arne.cl>
 
 RUN apk update && \
     apk add git wget openjdk8-jre-base py2-pip py2-curl && \
