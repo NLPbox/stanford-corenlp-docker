@@ -1,5 +1,4 @@
 FROM alpine:3.8 as builder
-MAINTAINER Arne Neumann <nlpbox.programming@arne.cl>
 
 RUN apk update && \
     apk add git wget openjdk8-jre-base py2-pip py2-curl && \
@@ -13,8 +12,8 @@ RUN python setup.py install
 
 # install latest CoreNLP release
 WORKDIR /opt
-RUN wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip && \
-    unzip stanford-corenlp-latest.zip && \
+RUN wget https://nlp.stanford.edu/software/stanford-corenlp-4.5.6.zip && \
+    unzip stanford-corenlp-4.5.6.zip && \
     mv $(ls -d stanford-corenlp-*/) corenlp && rm *.zip
 
 # install latest English language model
@@ -48,4 +47,3 @@ EXPOSE $PORT
 
 
 CMD java -Xmx$JAVA_XMX -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators "$ANNOTATORS" -port $PORT -timeout $TIMEOUT_MILLISECONDS
-
