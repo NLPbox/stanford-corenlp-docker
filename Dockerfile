@@ -34,7 +34,7 @@ COPY --from=builder /opt/corenlp .
 ADD test_api.py .
 
 ENV JAVA_XMX 4g
-ENV ANNOTATORS tokenize,ssplit,parse
+ENV ANNOTATORS tokenize,ssplit,pos,lemma,ner,depparse,coref,natlog,openie,parse
 ENV TIMEOUT_MILLISECONDS 15000
 
 ENV PORT 9000
