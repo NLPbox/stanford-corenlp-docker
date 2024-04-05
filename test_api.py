@@ -19,7 +19,7 @@ def start_api():
     # 2 GB RAM seems to be the minimal amount CoreNLP needs to parse
     # the example sentence.
     child = pexpect.spawn('java -Xmx2g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9000 -timeout 15000')
-    yield child.expect('(?i)StanfordCoreNLPServer listening at /0.0.0.0:9000') # provide the fixture value
+    yield child.expect('(?i)StanfordCoreNLPServer listening at /0:0:0:0:0:0:0:0:9000') # provide the fixture value
     print("stopping API...")
     child.close()
 

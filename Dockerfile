@@ -1,20 +1,15 @@
-FROM alpine:3.8 as builder
+FROM alpine:3.19 as builder
 MAINTAINER Arne Neumann <nlpbox.programming@arne.cl>
 
-RUN apk update && \
-    apk add git wget openjdk8-jre-base py2-pip py2-curl && \
-    pip install setuptools
+RUN apk update && apk add py3-pip wget
 
-# install grepurl script to retrieve the most current download URL of CoreNLP
 WORKDIR /opt
-RUN git clone https://github.com/arne-cl/grepurl.git
-WORKDIR /opt/grepurl
-RUN python setup.py install
 
-# install latest CoreNLP release
-WORKDIR /opt
-RUN wget https://nlp.stanford.edu/software/stanford-corenlp-latest.zip && \
-    unzip stanford-corenlp-latest.zip && \
+# install grepurl script to retrieve the most current download URL of CoreNLP.
+# install latest CoreNLP release.
+RUN pip install grepurl --break-system-packages && \
+    wget `grepurl -r 'stanford-corenlp-.*\.zip' -a http://stanfordnlp.github.io/CoreNLP` && \
+    unzip stanford-corenlp-*.zip && \
     mv $(ls -d stanford-corenlp-*/) corenlp && rm *.zip
 
 # install latest English language model
@@ -28,10 +23,10 @@ RUN wget $(grepurl -r 'english.*jar$' -a http://stanfordnlp.github.io/CoreNLP | 
 
 
 # only keep the things we need to run and test CoreNLP
-FROM alpine:3.8
+FROM alpine:3.19
 
 RUN apk update && apk add openjdk8-jre-base py3-pip && \
-    pip3 install pytest pexpect requests
+    pip install pytest pexpect requests --break-system-packages
 
 WORKDIR /opt/corenlp
 COPY --from=builder /opt/corenlp .

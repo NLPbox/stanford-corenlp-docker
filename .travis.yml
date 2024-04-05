@@ -4,7 +4,7 @@ services:
   - docker
 
 install:
-  - docker build -t corenlp .
+  - docker buildx build -t corenlp .
 
 script:
   - docker run --entrypoint=pytest -ti corenlp test_api.py
