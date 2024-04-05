@@ -25,7 +25,7 @@ docker run -e JAVA_XMX=3g -p 9000:9000 -ti nlpbox/corenlp
 In order to build and run the container from scratch (e.g. if you want to use the most current release of Stanford CoreNLP, type:
 
 ```
-docker build -t corenlp https://github.com/NLPbox/stanford-corenlp-docker.git
+docker buildx build -t corenlp https://github.com/NLPbox/stanford-corenlp-docker.git
 docker run -p 9000:9000 corenlp
 ```
 
